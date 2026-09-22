@@ -1,0 +1,10 @@
+sentence-transformers
+chromadb
+langgraph
+langchain-core
+pydantic
+fastapi
+uvicorn[standard]
+python-dotenv
+# Optional — only needed when MOCK_LLM=0 (ungraded extension):
+# groq
