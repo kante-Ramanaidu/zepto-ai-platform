@@ -124,12 +124,11 @@ This is an artificial, project-defined constant. It requires no API call and no 
 - **Two-table schema**: `categories` and `books` are separated so that category names are stored once (normalized), with `books.category_id` as a foreign key. This avoids string duplication and enables clean JOINs.
 
 ### Module 2 — Analytics
-<!-- Filled in after running 01_eda.ipynb and 02_modeling.ipynb -->
-- **Missing value decisions**: [See analytics/README.md for exact percentages and threshold-rule justifications]
+- **Missing value decisions**: deck (77.22% → drop column), age (19.87% → median imputation), embarked/embark_town (0.22% → drop rows). All decisions cite the <5%/5–30%/>30% threshold rule.
 - **Stratified split**: Class imbalance (~38% survived) means a random split could skew the class distribution. Stratification ensures both train and test sets reflect the true ratio.
 - **ColumnTransformer + Pipeline**: Enforces fit-on-train-only preprocessing structurally — the Pipeline's `.fit()` on training data and `.transform()` on test data is the architectural guarantee against leakage.
-- **Imbalance strategy**: [See analytics/README.md for conclusion after running experiments]
-- **Model recommendation**: [See analytics/README.md for final recommendation with metric values]
+- **Imbalance strategy**: SMOTE achieves the best F1 (0.7774) by oversampling the minority class in training only via `imblearn.pipeline.Pipeline`. `class_weight='balanced'` is simpler and achieves competitive Recall (0.8116).
+- **Model recommendation**: Random Forest (F1=0.7442, AUC=0.8287) is recommended. For deployment where missing a survivor is costly, the `class_weight='balanced'` variant (Recall=0.8116) is preferred.
 
 ### Module 3 — Support Assistant
 - **Per-document chunking**: The 8 policy documents are short enough that one chunk per document is appropriate. Smaller fixed-size chunks would fragment sentences without improving retrieval quality for this corpus size.
@@ -141,27 +140,29 @@ This is an artificial, project-defined constant. It requires no API call and no 
 
 ## Example API Calls — Module 3 (MOCK_LLM at default)
 
-<!-- Filled in after running the FastAPI server -->
-
 **Call 1 — Policy question (triggers retrieval):**
+```bash
+curl -X POST "http://localhost:8000/ask" \
+     -H "Content-Type: application/json" \
+     -d "{\"query\": \"What is the delivery fee for orders below INR 149?\"}"
+```
+**Raw JSON response (recorded from live server):**
 ```json
-POST /ask
-{"query": "What is the delivery fee for orders below INR 149?"}
-
-Response:
 {
-  "answer": "Based on the retrieved context: Zepto delivers grocery ...",
-  "sources": ["doc_01", ...],
+  "answer": "Based on the retrieved context: Zepto delivers grocery and household essentials to serviceable pin codes within 10 to 30 minutes of order confirmation, depending on the customer's delivery zone and current order volume. Standard del",
+  "sources": ["doc_01", "doc_05", "doc_03"],
   "confidence": 1.0
 }
 ```
 
 **Call 2 — General question (no retrieval):**
+```bash
+curl -X POST "http://localhost:8000/ask" \
+     -H "Content-Type: application/json" \
+     -d "{\"query\": \"What is the capital of France?\"}"
+```
+**Raw JSON response (recorded from live server):**
 ```json
-POST /ask
-{"query": "What is the capital of France?"}
-
-Response:
 {
   "answer": "I can only answer questions about Zepto policies right now.",
   "sources": [],
