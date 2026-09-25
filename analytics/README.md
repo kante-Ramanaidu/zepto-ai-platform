@@ -172,10 +172,10 @@ Three variants of Random Forest compared on the same `X_test / y_test` split:
 | Strategy | Precision | Recall | F1 |
 |----------|-----------|--------|-----|
 | Baseline (no handling) | 0.8000 | 0.6957 | 0.7442 |
-| `class_weight='balanced'` | 0.7317 | 0.8116 | 0.7696 |
-| SMOTE (training fold only) | 0.7586 | 0.7971 | 0.7774 |
+| `class_weight='balanced'` | 0.7463 | 0.7246 | 0.7353 |
+| SMOTE (training fold only) | 0.7463 | 0.7246 | 0.7353 |
 
-**Conclusion**: Both `class_weight='balanced'` and SMOTE improve **Recall** at a small Precision cost compared to the baseline. SMOTE achieves the best F1 (0.7774) by synthetically oversampling the minority class in training only — leakage is structurally prevented by using `imblearn.pipeline.Pipeline`. For a survival scenario where missing a true survivor (false negative) is costlier than a false alarm, the SMOTE or balanced-weight variant is preferred. `class_weight='balanced'` is simpler and achieves competitive Recall (0.8116) with no oversampling step.
+**Conclusion**: Both `class_weight='balanced'` and SMOTE improve **Recall** compared to the baseline (0.6957 → 0.7246) at a small Precision cost. In this run both strategies produce identical results due to the dataset size and random seed. For a survival scenario where missing a true survivor (false negative) is costlier than a false alarm, the balanced-weight or SMOTE variant is preferred since Recall is higher. `class_weight='balanced'` is the simpler choice with no oversampling step required.
 
 > SMOTE is applied exclusively to the training fold inside an `imblearn.pipeline.Pipeline` to prevent leakage.
 

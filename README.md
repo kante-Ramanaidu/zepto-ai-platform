@@ -127,7 +127,7 @@ This is an artificial, project-defined constant. It requires no API call and no 
 - **Missing value decisions**: deck (77.22% → drop column), age (19.87% → median imputation), embarked/embark_town (0.22% → drop rows). All decisions cite the <5%/5–30%/>30% threshold rule.
 - **Stratified split**: Class imbalance (~38% survived) means a random split could skew the class distribution. Stratification ensures both train and test sets reflect the true ratio.
 - **ColumnTransformer + Pipeline**: Enforces fit-on-train-only preprocessing structurally — the Pipeline's `.fit()` on training data and `.transform()` on test data is the architectural guarantee against leakage.
-- **Imbalance strategy**: SMOTE achieves the best F1 (0.7774) by oversampling the minority class in training only via `imblearn.pipeline.Pipeline`. `class_weight='balanced'` is simpler and achieves competitive Recall (0.8116).
+- **Imbalance strategy**: Both `class_weight='balanced'` and SMOTE improve Recall (0.6957 → 0.7246) compared to baseline. Both produce identical F1 (0.7353) in this run. `class_weight='balanced'` is the simpler choice with no oversampling required.
 - **Model recommendation**: Random Forest (F1=0.7442, AUC=0.8287) is recommended. For deployment where missing a survivor is costly, the `class_weight='balanced'` variant (Recall=0.8116) is preferred.
 
 ### Module 3 — Support Assistant
