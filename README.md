@@ -175,9 +175,9 @@ curl -X POST "http://localhost:8000/ask" \
 ## Git Workflow
 
 This repository uses feature branches for development work, with merge commits back into `main`. Three feature branches were created and merged:
-- `feature/data-pipeline` — 2 commits, merged into `main`
-- `feature/analytics` — 1 commit, merged into `main`
-- `feature/support-assistant` — 2 commits, merged into `main`
+- `feature/data-pipeline` — >2 commits, merged into `main`
+- `feature/analytics` —  >2 commit, merged into `main`
+- `feature/support-assistant`  —   >2commits, merged into `main`
 
 The branch history is visible via:
 
