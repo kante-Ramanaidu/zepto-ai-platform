@@ -174,7 +174,12 @@ curl -X POST "http://localhost:8000/ask" \
 
 ## Git Workflow
 
-This repository uses a `feature/zepto-platform` branch for all development work, with a merge commit back into `main`. The branch history is visible via:
+This repository uses feature branches for development work, with merge commits back into `main`. Three feature branches were created and merged:
+- `feature/data-pipeline` — 2 commits, merged into `main`
+- `feature/analytics` — 1 commit, merged into `main`
+- `feature/support-assistant` — 2 commits, merged into `main`
+
+The branch history is visible via:
 
 ```bash
 git log --graph --all --oneline
