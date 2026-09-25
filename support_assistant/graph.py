@@ -32,7 +32,7 @@ TOP_SNIPPET_LEN = 200   # chars for the canned mock answer
 # Keywords for classify_intent mock heuristic (spec-defined list)
 POLICY_KEYWORDS = [
     "delivery", "return", "refund", "membership",
-    "tracking", "cancel", "gift card", "support hours"
+    "track", "tracking", "cancel", "gift card", "support hours"
 ]
 
 # ── Shared resources (loaded once at module import) ────────────────────────────
